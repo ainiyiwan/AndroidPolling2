@@ -3,6 +3,8 @@ package io.hypertrack.android_scheduler_demo;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +16,8 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
+
+import java.util.ArrayList;
 
 import io.hypertrack.smart_scheduler.Job;
 import io.hypertrack.smart_scheduler.SmartScheduler;
@@ -28,6 +32,10 @@ public class MainActivity extends AppCompatActivity implements SmartScheduler.Jo
     private Switch requiresChargingSwitch, isPeriodicSwitch;
     private EditText intervalInMillisEditText;
     private Button smartJobButton;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private ArrayList<String> data;
 
     //have seen
     @Override
@@ -42,6 +50,33 @@ public class MainActivity extends AppCompatActivity implements SmartScheduler.Jo
         isPeriodicSwitch = (Switch) findViewById(R.id.switchPeriodicJob);
         intervalInMillisEditText = (EditText) findViewById(R.id.jobInterval);
         smartJobButton = (Button) findViewById(R.id.smartJobButton);
+        mRecyclerView = findViewById(R.id.recyclerView);
+
+        init();
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+        mAdapter = new MyAdapter(data);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    /*
+     * 初始化
+     */
+    private void init() {
+        if (data != null){
+            data.clear();
+        }else {
+            data = new ArrayList<>();
+        }
+
+        data.add("default data"+DateUtil.getDateToString());
     }
 
     public void onSmartJobBtnClick(View view) {
@@ -157,7 +192,11 @@ public class MainActivity extends AppCompatActivity implements SmartScheduler.Jo
                 @Override
                 public void run() {
                     Logger.t("schedule").d("onJobScheduled 切换到工作线程---------------工作结束吐司吧-----------"+"\n"+"时间："+DateUtil.getDateToString());
-                    Toast.makeText(MainActivity.this, "Job: " + job.getJobId() + " scheduled!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Job: " + job.getJobId() + " scheduled!", Toast.LENGTH_SHORT).show();
+                    int count = data.size();
+                    data.add("成功次数= "+count+" 成功时间= "+DateUtil.getDateToString());
+//                    mAdapter.notifyDataSetChanged();
+                    mAdapter.notifyItemInserted(data.size());
                 }
             });
 //            Log.d(TAG, "Job: " + job.getJobId() + " scheduled!");
@@ -184,6 +223,9 @@ public class MainActivity extends AppCompatActivity implements SmartScheduler.Jo
         smartJobButton.setText(getString(R.string.schedule_job_btn));
         smartJobButton.setEnabled(true);
         smartJobButton.setAlpha(1.0f);
+
+        init();
+        mAdapter.notifyDataSetChanged();
     }
 }
 

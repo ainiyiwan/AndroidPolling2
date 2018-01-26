@@ -12,6 +12,7 @@
     <string name="job_interval">Interval (millis)</string>
     <string name="schedule_job_btn">Schedule Smart Job</string>
     <string name="remove_job_btn">Remove Periodic Smart Job</string>
+    <string name="default_string">default</string>
 
     <string-array name="job_type_array">
         <item>Best Job Type based on params</item>
