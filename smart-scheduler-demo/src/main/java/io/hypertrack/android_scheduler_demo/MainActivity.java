@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements SmartScheduler.Jo
         // Schedule current created job
         if (jobScheduler.addJob(job)) {
             Toast.makeText(MainActivity.this, "Job successfully added!", Toast.LENGTH_SHORT).show();
-
+            Logger.t("jobType").d("任务添加成功==========="+"\n"+"时间："+DateUtil.getDateToString());
             if (job.isPeriodic()) {
                 smartJobButton.setText(getString(R.string.remove_job_btn));
             } else {
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements SmartScheduler.Jo
     //have seen
     private Job createJob() {
         int jobType = getJobType();
-        Logger.d("jobType==="+jobType+"\n"+"时间："+DateUtil.getDateToString());
+        Logger.t("jobType").d("jobType==="+jobType+"\n"+"时间："+DateUtil.getDateToString());
         int networkType = getNetworkTypeForJob();
         Logger.d("networkType==="+networkType+"\n"+"时间："+DateUtil.getDateToString());
         boolean requiresCharging = requiresChargingSwitch.isChecked();
@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements SmartScheduler.Jo
         int jobTypeSelectedPos = jobTypeSpinner.getSelectedItemPosition();
         switch (jobTypeSelectedPos) {
             default:
+                return Job.Type.JOB_TYPE_NONE;
             case 1:
                 return Job.Type.JOB_TYPE_HANDLER;
             case 2:
