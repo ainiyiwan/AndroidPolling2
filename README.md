@@ -39,7 +39,7 @@ protected static final long JOB_TYPE_HANDLER_THRESHOLD = 60000;
 >（英语：Google Cloud Messaging，简称GCM），一项由Google提供的云端推播服务。
 - 否则就用AlarmManager实现
 
-## 关于上面的第二种方式，我测试了一下如果选择了JOB_TYPE_PERIODIC_TASK，那么国内的机型，如果没有Google play服务，就不会执行任务，所以国内用户，务必设置要求充电选项为false，或者自己改元源码
+## 关于上面的第二种方式，我测试了一下如果选择了JOB_TYPE_PERIODIC_TASK，那么国内的机型，如果没有Google play服务，就不会执行任务，所以国内用户，务必设置要求充电选项为false，或者自己改源码
 
 ### 补充一点
 就选是符合了上面第二种方式也不一定会选择GCM，这里还有个坑
